@@ -1,36 +1,37 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import * as api from "./utils/API"
-export default class App extends Component {
-  state = {
+import React from 'react';
+import { createAppContainer } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import DeckList from "./components/DeckList"
+import NewDeck from "./components/NewDeck"
 
+const App = createBottomTabNavigator({
+  Decks: DeckList,
+  "New Deck": NewDeck,
+},
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, tintColor }) => {
+        const { routeName } = navigation.state;
+        let IconComponent = Ionicons;
+        let iconName;
+        if (routeName === 'Decks') {
+          iconName = focused
+            ? 'md-list-box'
+            : 'md-list-box';
+        } else if (routeName === 'New Deck') {
+          iconName = focused ? 'md-add-circle' : 'md-add-circle';
+        }
+
+        // You can return any component that you like here!
+        return <IconComponent name={iconName} size={25} color={tintColor} />;
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: 'blue',
+      inactiveTintColor: 'gray',
+    },
   }
-  componentDidMount() {
-    // api.storeDecks()
-  }
+);
 
-  render() {
-    // api.createDeck('test')
-    // api.addCardToDeck('test', "What is your name?", "Abdulrahman")
-    // api.getDecks()
-    //   .then(() => api.removeDeck('JavaScript'))
-    //   .then(() => api.getDecks())
-    // .then(() => console.log("done removing"))
-
-
-    return (
-      <View style={styles.container} >
-        <Text>Open up App.js to start working on your app!</Text>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default createAppContainer(App)
