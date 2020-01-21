@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
     View,
     TouchableOpacity,
@@ -10,65 +10,54 @@ import Constants from 'expo-constants';
 
 const DATA = [
     {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
+        title: 'React',
+        questions: [
+            {
+                id: 3,
+                question: 'What is React?',
+                answer: 'A library for managing user interfaces'
+            },
+            {
+                id: 4,
+                question: 'Where do you make Ajax requests in React?',
+                answer: 'The componentDidMount lifecycle event'
+            }
+        ]
     },
 ];
 
-function Item({ id, title, selected, onSelect }) {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-            <TouchableOpacity
-                onPress={() => onSelect(id)}
-                style={[
-                    styles.item,
-                    { backgroundColor: selected ? '#6e3b6e' : '#f9c2ff' },
-                ]}
-            >
-                <Text style={styles.title}>{title}</Text>
-            </TouchableOpacity>
-        </View>
-    );
-}
+export default class DeckList extends Component {
+    state = {}
+    componentDidMount() {
 
-export default function DeckList() {
-    const [selected, setSelected] = React.useState(new Map());
+    }
+    render() {
 
-    const onSelect = React.useCallback(
-        id => {
-            const newSelected = new Map(selected);
-            newSelected.set(id, !selected.get(id));
+        return (
+            <View style={styles.container}>
+                <FlatList
+                    data={DATA}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            style={styles.box}
+                            onPress={() => this.props.navigation.navigate("Deck Details")}
+                        >
+                            <View style={styles.Deckcontainer}>
+                                <Text style={styles.title}>
+                                    {item.title}
+                                </Text>
+                                <Text style={styles.subTitle}>
+                                    {item.questions.length} cards
+                        </Text>
+                            </View>
+                        </TouchableOpacity>
+                    )}
+                    keyExtractor={item => item.title}
+                />
+            </View>
+        );
 
-            setSelected(newSelected);
-        },
-        [selected],
-    );
-
-    return (
-        <View style={styles.container}>
-            <FlatList
-                data={DATA}
-                renderItem={({ item }) => (
-                    <Item
-                        id={item.id}
-                        title={item.title}
-                        selected={!!selected.get(item.id)}
-                        onSelect={onSelect}
-                    />
-                )}
-                keyExtractor={item => item.id}
-                extraData={selected}
-            />
-        </View>
-    );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -76,13 +65,30 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: Constants.statusBarHeight,
     },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+    box: {
+        flex: 1,
+        height: 200,
+        maxWidth: '45%',
+        backgroundColor: '#ffffff',
+        borderRadius: 5,
+        margin: 10,
+        shadowOffset: { width: 10, height: 10 },
+        shadowColor: 'black',
+        shadowOpacity: 1,
+        elevation: 6,
+    },
+    Deckcontainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     title: {
-        fontSize: 32,
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#455356',
     },
+    subTitle: {
+        fontSize: 14,
+        color: '#838c8e',
+    }
 });

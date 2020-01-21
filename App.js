@@ -19,7 +19,7 @@ const MainNavigator = createStackNavigator({
       header: null
     }
   },
-  DeckDetail: {
+  "Deck Details": {
     screen: DeckDetails,
     navigationOptions: {
       headerTintColor: 'white',
