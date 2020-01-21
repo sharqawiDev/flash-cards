@@ -1,5 +1,11 @@
-import React, { Component } from 'react'
-import { SafeAreaView, View, FlatList, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import {
+    View,
+    TouchableOpacity,
+    FlatList,
+    StyleSheet,
+    Text,
+} from 'react-native';
 import Constants from 'expo-constants';
 
 const DATA = [
@@ -17,23 +23,51 @@ const DATA = [
     },
 ];
 
-function Item({ title }) {
+function Item({ id, title, selected, onSelect }) {
     return (
-        <View style={styles.item}>
-            <Text style={styles.title}>{title}</Text>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+            <TouchableOpacity
+                onPress={() => onSelect(id)}
+                style={[
+                    styles.item,
+                    { backgroundColor: selected ? '#6e3b6e' : '#f9c2ff' },
+                ]}
+            >
+                <Text style={styles.title}>{title}</Text>
+            </TouchableOpacity>
         </View>
     );
 }
 
-export default function App() {
+export default function DeckList() {
+    const [selected, setSelected] = React.useState(new Map());
+
+    const onSelect = React.useCallback(
+        id => {
+            const newSelected = new Map(selected);
+            newSelected.set(id, !selected.get(id));
+
+            setSelected(newSelected);
+        },
+        [selected],
+    );
+
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <FlatList
                 data={DATA}
-                renderItem={({ item }) => <Item title={item.title} />}
+                renderItem={({ item }) => (
+                    <Item
+                        id={item.id}
+                        title={item.title}
+                        selected={!!selected.get(item.id)}
+                        onSelect={onSelect}
+                    />
+                )}
                 keyExtractor={item => item.id}
+                extraData={selected}
             />
-        </SafeAreaView>
+        </View>
     );
 }
 

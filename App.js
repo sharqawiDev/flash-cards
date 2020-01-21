@@ -1,13 +1,76 @@
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from "react-navigation-stack"
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import * as Colors from "./utils/colors"
 import DeckList from "./components/DeckList"
+import DeckDetails from "./components/DeckDetails"
 import NewDeck from "./components/NewDeck"
+import AddCard from "./components/AddCard"
+import Quiz from "./components/Quiz"
 
-const App = createBottomTabNavigator({
-  Decks: DeckList,
-  "New Deck": NewDeck,
+
+
+const MainNavigator = createStackNavigator({
+  Decks: {
+    screen: DeckList,
+    navigationOptions: {
+      header: null
+    }
+  },
+  DeckDetail: {
+    screen: DeckDetails,
+    navigationOptions: {
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: Colors.blue,
+      }
+    }
+  },
+  AddCard: {
+    screen: AddCard,
+    navigationOptions: {
+      title: 'Add Card',
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: Colors.blue,
+      }
+    }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: {
+      title: 'Quiz',
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: Colors.blue,
+      }
+    }
+  }
+})
+
+const NewDeckNavigator = createStackNavigator({
+  "New Deck": {
+    screen: NewDeck,
+    navigationOptions: {
+      header: null
+    }
+  },
+  Decks: {
+    screen: DeckList,
+    navigationOptions: {
+      headerTintColor: 'white',
+      headerStyle: {
+        backgroundColor: Colors.blue,
+      }
+    }
+  },
+})
+
+export default createAppContainer(createBottomTabNavigator({
+  Decks: { screen: MainNavigator },
+  "New Deck": { screen: NewDeckNavigator },
 },
   {
     defaultNavigationOptions: ({ navigation }) => ({
@@ -32,6 +95,4 @@ const App = createBottomTabNavigator({
       inactiveTintColor: 'gray',
     },
   }
-);
-
-export default createAppContainer(App)
+))
