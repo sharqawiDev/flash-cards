@@ -11,7 +11,10 @@ export default class DeckDetails extends Component {
     };
 
     state = {
-        deck: {},
+        deck: {
+            title: "",
+            questions: []
+        },
     }
 
 
@@ -33,10 +36,10 @@ export default class DeckDetails extends Component {
             <View style={styles.container}>
                 <View style={styles.Box}>
                     <Text style={styles.title}>{deck.title} Deck</Text>
-                    {this.state.deck.question
-                        ? <Text style={styles.subTitle}>{deck.questions.length} cards</Text>
-                        : null
-                    }
+
+                    <Text style={styles.subTitle}>{deck.questions.length} cards</Text>
+
+
                 </View>
                 <TouchableOpacity style={styles.button}
                     onPress=
@@ -48,7 +51,13 @@ export default class DeckDetails extends Component {
                 >
                     <Text style={styles.buttonText}>Add Card</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button}
+                    onPress=
+                    {
+                        () => this.props.navigation.navigate(
+                            "Quiz", { questions: deck.questions }
+                        )
+                    } >
                     <Text style={styles.buttonText}>Start Quiz</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={[styles.button, styles.deleteBtn]}
