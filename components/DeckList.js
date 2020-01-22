@@ -14,10 +14,15 @@ export default class DeckList extends Component {
         decks: {}
     }
     componentDidMount() {
-        storeDecks()
-            .then(() => getDecks()
-                .then((decks) => this.setState({ decks })))
+        getDecks()
+            .then((decks) => this.setState({ decks }))
     }
+
+    refresh = () => {
+        getDecks()
+            .then((decks) => this.setState({ decks }))
+    }
+
     render() {
         const { decks } = this.state;
         return (
@@ -34,7 +39,8 @@ export default class DeckList extends Component {
                                         "Deck Details",
                                         {
                                             title: item,
-                                            deck: decks[item]
+                                            deck: decks[item],
+                                            onGoBack: () => this.refresh()
                                         }
                                     )
                                 }

@@ -20,6 +20,17 @@ export const getDecks = async () => {
         console.log(error)
     }
 };
+export const getDeck = async (title) => {
+    try {
+        const decks = await AsyncStorage.getItem(DATA_KEY);
+        if (decks !== null) {
+            // We have data!!
+            return JSON.parse(decks)[title];
+        }
+    } catch (error) {
+        console.log(error)
+    }
+};
 
 export const addDeck = async (title) => {
     try {

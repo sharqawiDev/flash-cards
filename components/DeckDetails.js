@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
-import { gray, blue, red } from '../utils/colors'
+import { blue, red } from '../utils/colors'
+import { removeDeck, getDeck } from "../utils/API"
+
 export default class DeckDetails extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -9,8 +11,22 @@ export default class DeckDetails extends Component {
     };
 
     state = {
-        deck: this.props.navigation.state.params.deck
+        deck: {},
     }
+
+
+
+    componentDidMount() {
+        const title = this.props.navigation.state.params.title;
+        getDeck(title).then((deck) => this.setState({ deck }))
+    }
+
+    handleRemoveDeck = (title) => {
+        removeDeck(title).then(() =>
+            this.props.navigation.state.params.onGoBack())
+            .then(() => this.props.navigation.goBack())
+    }
+
 
     render() {
         const { deck } = this.state;
@@ -19,15 +35,26 @@ export default class DeckDetails extends Component {
             <View style={styles.container}>
                 <View style={styles.Box}>
                     <Text style={styles.title}>{deck.title} Deck</Text>
-                    <Text style={styles.subTitle}>{deck.questions.length} cards</Text>
+                    {this.state.deck.question
+                        ? <Text style={styles.subTitle}>{deck.questions.length} cards</Text>
+                        : null
+                    }
                 </View>
-                <TouchableOpacity style={styles.button} >
+                <TouchableOpacity style={styles.button}
+                    onPress=
+                    {
+                        () => this.props.navigation.navigate(
+                            "AddCard", { deck }
+                        )
+                    }
+                >
                     <Text style={styles.buttonText}>Add Card</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} >
                     <Text style={styles.buttonText}>Start Quiz</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[styles.button, styles.deleteBtn]} >
+                <TouchableOpacity style={[styles.button, styles.deleteBtn]}
+                    onPress={() => this.handleRemoveDeck(deck["title"])}>
                     <Text style={styles.buttonText}>Remove Deck</Text>
                 </TouchableOpacity>
             </View>

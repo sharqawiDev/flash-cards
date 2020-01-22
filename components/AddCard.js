@@ -4,7 +4,7 @@ export default class AddCard extends Component {
     render() {
         return (
             <View>
-                <Text>DeckDetails</Text>
+                <Text>AddCard</Text>
             </View>
         )
     }
