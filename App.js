@@ -11,8 +11,10 @@ import NewDeck from "./components/NewDeck"
 import AddCard from "./components/AddCard"
 import Quiz from "./components/Quiz"
 import { createAppContainer } from 'react-navigation';
+import { setLocalNotification } from "./utils/API"
 
 storeDecks()
+setLocalNotification()
 
 const MainNavigator = createStackNavigator({
   Decks: {
