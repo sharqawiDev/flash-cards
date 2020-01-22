@@ -83,6 +83,9 @@ export const addCardToDeck = async (deckTitle, question, answer) => {
         if (!exist) {
             decks[deckTitle].questions.push({ id: IDGenerator(), question, answer })
             await AsyncStorage.mergeItem(DATA_KEY, JSON.stringify(decks))
+            return true
+        } else {
+            return false
         }
 
     } catch (error) {

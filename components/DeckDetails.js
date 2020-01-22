@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { blue, red } from '../utils/colors'
 import { removeDeck, getDeck } from "../utils/API"
-
+import { NavigationEvents } from 'react-navigation';
 export default class DeckDetails extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -23,6 +23,11 @@ export default class DeckDetails extends Component {
         const title = this.props.navigation.state.params.title;
         getDeck(title).then((deck) => this.setState({ deck }))
     }
+    refresh = () => {
+        const title = this.props.navigation.state.params.title;
+        getDeck(title).then((deck) => this.setState({ deck }))
+    }
+
 
     handleRemoveDeck = (title) => {
         removeDeck(title).then(() => this.props.navigation.goBack())
@@ -31,9 +36,9 @@ export default class DeckDetails extends Component {
 
     render() {
         const { deck } = this.state;
-        console.log(deck)
         return (
             <View style={styles.container}>
+                <NavigationEvents onWillFocus={this.refresh} />
                 <View style={styles.Box}>
                     <Text style={styles.title}>{deck.title} Deck</Text>
 
@@ -45,7 +50,7 @@ export default class DeckDetails extends Component {
                     onPress=
                     {
                         () => this.props.navigation.navigate(
-                            "AddCard", { deck }
+                            "AddCard", { title: deck.title }
                         )
                     }
                 >
