@@ -7,52 +7,50 @@ import {
     Text,
 } from 'react-native';
 import Constants from 'expo-constants';
-
-const DATA = [
-    {
-        title: 'React',
-        questions: [
-            {
-                id: 3,
-                question: 'What is React?',
-                answer: 'A library for managing user interfaces'
-            },
-            {
-                id: 4,
-                question: 'Where do you make Ajax requests in React?',
-                answer: 'The componentDidMount lifecycle event'
-            }
-        ]
-    },
-];
+import { storeDecks, getDecks } from "../utils/API"
 
 export default class DeckList extends Component {
-    state = {}
+    state = {
+        decks: {}
+    }
     componentDidMount() {
-
+        storeDecks()
+            .then(() => getDecks()
+                .then((decks) => this.setState({ decks })))
     }
     render() {
-
+        const { decks } = this.state;
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={DATA}
+                    data={Object.keys(decks)}
                     renderItem={({ item }) => (
-                        <TouchableOpacity
-                            style={styles.box}
-                            onPress={() => this.props.navigation.navigate("Deck Details")}
-                        >
-                            <View style={styles.Deckcontainer}>
+                        <View>
+                            <TouchableOpacity
+                                style={styles.box}
+                                onPress=
+                                {
+                                    () => this.props.navigation.navigate(
+                                        "Deck Details",
+                                        {
+                                            title: item,
+                                            deck: decks[item]
+                                        }
+                                    )
+                                }
+                            >
+
                                 <Text style={styles.title}>
-                                    {item.title}
+                                    {decks[item].title}
                                 </Text>
                                 <Text style={styles.subTitle}>
-                                    {item.questions.length} cards
-                        </Text>
-                            </View>
-                        </TouchableOpacity>
+                                    {decks[item].questions.length} cards
+                            </Text>
+
+                            </TouchableOpacity>
+                        </View>
                     )}
-                    keyExtractor={item => item.title}
+                    keyExtractor={item => item}
                 />
             </View>
         );
@@ -64,11 +62,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Constants.statusBarHeight,
+        flexDirection: "row",
     },
     box: {
         flex: 1,
-        height: 200,
-        maxWidth: '45%',
+        height: 100,
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundColor: '#ffffff',
         borderRadius: 5,
         margin: 10,
@@ -76,11 +76,6 @@ const styles = StyleSheet.create({
         shadowColor: 'black',
         shadowOpacity: 1,
         elevation: 6,
-    },
-    Deckcontainer: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     title: {
         fontSize: 22,
