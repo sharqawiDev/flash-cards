@@ -27,37 +27,43 @@ export default class DeckList extends Component {
         const { decks } = this.state;
         return (
             <View style={styles.container}>
-                <FlatList
-                    data={Object.keys(decks)}
-                    renderItem={({ item }) => (
-                        <View>
-                            <TouchableOpacity
-                                style={styles.box}
-                                onPress=
-                                {
-                                    () => this.props.navigation.navigate(
-                                        "Deck Details",
-                                        {
-                                            title: item,
-                                            deck: decks[item],
-                                            onGoBack: () => this.refresh()
-                                        }
-                                    )
-                                }
-                            >
+                {Object.keys(decks).length === 0
+                    ? <View style={[styles.container, styles.noDecks]}>
+                        <Text style={styles.title}>There is no Decks</Text>
+                    </View>
+                    : <FlatList
+                        data={Object.keys(decks)}
+                        renderItem={({ item }) => (
+                            <View>
+                                <TouchableOpacity
+                                    style={styles.box}
+                                    onPress=
+                                    {
+                                        () => this.props.navigation.navigate(
+                                            "Deck Details",
+                                            {
+                                                title: item,
+                                                deck: decks[item],
+                                                onGoBack: () => this.refresh()
+                                            }
+                                        )
+                                    }
+                                >
 
-                                <Text style={styles.title}>
-                                    {decks[item].title}
-                                </Text>
-                                <Text style={styles.subTitle}>
-                                    {decks[item].questions.length} cards
+                                    <Text style={styles.title}>
+                                        {decks[item].title}
+                                    </Text>
+                                    <Text style={styles.subTitle}>
+                                        {decks[item].questions.length} cards
                             </Text>
 
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                    keyExtractor={item => item}
-                />
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                        keyExtractor={item => item}
+                    />
+                }
+
             </View>
         );
 
@@ -68,7 +74,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: Constants.statusBarHeight,
-        flexDirection: "row",
+    },
+    noDecks: {
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     box: {
         flex: 1,
