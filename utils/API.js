@@ -36,14 +36,11 @@ export const addDeck = async (title) => {
     try {
         let decks = await AsyncStorage.getItem(DATA_KEY);
         decks = JSON.parse(decks)
-        if (Object.keys(decks).length === 0) {
-            console.log("there is no decks");
-            return
-        }
+        let message = "";
         let exist = false;
         Object.keys(decks).map(deckTitle => {
             if (deckTitle === title) {
-                console.log("Deck already exist")
+                message = "Deck already exist"
                 exist = true;
             }
         })
@@ -55,6 +52,9 @@ export const addDeck = async (title) => {
                     questions: []
                 }
             }))
+            return { message: "Deck has been added successfully!", done: true }
+        } else {
+            return { message, done: false }
         }
     } catch (error) {
         console.log("createDeck error")

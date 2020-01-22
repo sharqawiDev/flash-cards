@@ -6,8 +6,9 @@ import {
     StyleSheet,
     Text,
 } from 'react-native';
+import { NavigationEvents } from 'react-navigation';
 import Constants from 'expo-constants';
-import { storeDecks, getDecks } from "../utils/API"
+import { getDecks } from "../utils/API"
 
 export default class DeckList extends Component {
     state = {
@@ -27,6 +28,8 @@ export default class DeckList extends Component {
         const { decks } = this.state;
         return (
             <View style={styles.container}>
+                <NavigationEvents
+                    onWillFocus={() => this.refresh()} />
                 {Object.keys(decks).length === 0
                     ? <View style={[styles.container, styles.noDecks]}>
                         <Text style={styles.title}>There is no Decks</Text>
@@ -44,7 +47,6 @@ export default class DeckList extends Component {
                                             {
                                                 title: item,
                                                 deck: decks[item],
-                                                onGoBack: () => this.refresh()
                                             }
                                         )
                                     }

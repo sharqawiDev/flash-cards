@@ -22,9 +22,7 @@ export default class DeckDetails extends Component {
     }
 
     handleRemoveDeck = (title) => {
-        removeDeck(title).then(() =>
-            this.props.navigation.state.params.onGoBack())
-            .then(() => this.props.navigation.goBack())
+        removeDeck(title).then(() => this.props.navigation.goBack())
     }
 
 
