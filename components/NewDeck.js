@@ -12,8 +12,15 @@ export default class NewDeck extends Component {
         if (this.state.input == '') {
             alert("You must enter a deck title")
         } else {
-            addDeck(this.state.input).then((result) => alert(result.message))
-            this.setState({ input: "" })
+            addDeck(this.state.input)
+                .then((result) => alert(result.message))
+                .then(() => {
+                    const title = this.state.input;
+                    this.setState({ input: "" })
+                    this.props.navigation.navigate("Deck Details", {
+                        title
+                    })
+                })
         }
     }
     render() {

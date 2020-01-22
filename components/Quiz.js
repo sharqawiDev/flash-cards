@@ -7,18 +7,11 @@ import { withNavigation } from 'react-navigation'
 class Quiz extends Component {
     state = {
         isFlipped: false,
-        questions: null,
+        questions: this.props.navigation.state.params.questions,
         correctGuesses: 0,
         wrongGuesses: 0,
         index: 0,
         finished: false,
-    }
-
-    componentDidMount() {
-        const { questions } = this.props.navigation.state.params
-        this.setState(() => ({
-            questions
-        }))
     }
 
     onCorrect = () => {
