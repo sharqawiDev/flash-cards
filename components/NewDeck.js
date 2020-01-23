@@ -23,6 +23,10 @@ export default class NewDeck extends Component {
                 })
         }
     }
+
+    handleInputChange = (value) => {
+        this.setState({ input: value })
+    }
     render() {
         return (
             <View style={styles.container}>
@@ -30,9 +34,7 @@ export default class NewDeck extends Component {
                 <TextInput
                     style={styles.input}
                     value={this.state.input}
-                    onChangeText={(value) => {
-                        this.setState({ input: value })
-                    }}
+                    onChangeText={(value) => this.handleInputChange(value)}
                     placeholder='Deck Title' />
                 <TouchableOpacity style={styles.button} onPress={this.submitDeck}>
                     <Text style={styles.buttonText}>Submit</Text>

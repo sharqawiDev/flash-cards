@@ -59,9 +59,13 @@ export default class DeckDetails extends Component {
                 <TouchableOpacity style={styles.button}
                     onPress=
                     {
-                        () => this.props.navigation.navigate(
-                            "Quiz", { questions: deck.questions }
-                        )
+                        () => {
+                            deck.questions.length === 0
+                                ? alert("You can't start a quiz if you have no questions")
+                                : this.props.navigation.navigate(
+                                    "Quiz", { questions: deck.questions }
+                                )
+                        }
                     } >
                     <Text style={styles.buttonText}>Start Quiz</Text>
                 </TouchableOpacity>

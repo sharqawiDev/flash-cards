@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { TextInput, View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { blue } from '../utils/colors'
 import { addCardToDeck } from "../utils/API"
+import { KeyboardAvoidingView } from 'react-native';
 
 class AddCard extends Component {
     state = {
@@ -43,7 +44,7 @@ class AddCard extends Component {
 
     render() {
         return (
-            <View>
+            <KeyboardAvoidingView behavior="padding" enabled>
                 <View style={styles.inputContainer}>
                     <TextInput
                         value={this.state.question}
@@ -61,7 +62,7 @@ class AddCard extends Component {
                 <TouchableOpacity style={styles.button} onPress={this.handleSubmitCard}>
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
         )
     }
 }
